@@ -15,7 +15,6 @@ public class Main {
 
 	private Main() {
 		// does not make sense to construct this class
-		//added comments
 	}
 
 	/**
