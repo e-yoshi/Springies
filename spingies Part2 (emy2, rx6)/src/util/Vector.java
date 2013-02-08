@@ -15,12 +15,17 @@ public class Vector {
     private double myAngle;
     // "speed" in pixels per second
     private double myMagnitude;
+    // canonical directions
+    public static final int RIGHT_DIRECTION = 0;
+    public static final int DOWN_DIRECTION =  90;
+    public static final int LEFT_DIRECTION = 180;
+    public static final int UP_DIRECTION = 270;
 
 
     /**
      * Create a zero vector, i.e., with no magnitude.
      */
-    public Vector () {
+    public Vector(){
         this(0, 0);
     }
 

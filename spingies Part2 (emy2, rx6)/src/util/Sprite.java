@@ -33,7 +33,6 @@ public abstract class Sprite {
     private Pixmap myOriginalView;
     // cached for efficiency
     private Rectangle myBounds;
-    
 
     /**
      * Create a shape at the given position, with the given size.

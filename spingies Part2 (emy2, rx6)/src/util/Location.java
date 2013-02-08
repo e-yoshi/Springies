@@ -53,7 +53,17 @@ public class Location extends Point2D.Double {
     public void translate (Vector amount) {
         setLocation(getX() + amount.getXChange(), getY() + amount.getYChange());
     }
-
+    
+    /**
+     * Move this location by given vector.
+     * 
+     * @see java.awt.Point#translate(int, int)
+     */
+    public Location calcTranslate ( Vector amount) {
+        
+		return new Location(this.getX() + amount.getXChange(), this.getY() + amount.getYChange());
+    }
+    
     /**
      * Returns a vector that is the difference between this location and
      * the given other location.

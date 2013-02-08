@@ -129,14 +129,9 @@ public class Canvas extends JComponent {
                 }
             });
         // start animation
-        
         loadEnvironment();
         mySimulation = new Model(this);
         loadModel();
-        
-        
-        
-       
         myTimer.start();
     }
 
@@ -159,7 +154,7 @@ public class Canvas extends JComponent {
     /**
      * Create listeners that will update state based on user input.
      */
-    private void setInputListeners () {
+    private void setInputListeners(){
         // initialize input state
         myLastKeyPressed = NO_KEY_PRESSED;
         myKeys = new TreeSet<Integer>();

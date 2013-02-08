@@ -32,7 +32,6 @@ public class Model {
         mySprings = new ArrayList<Spring>();
         myMuscles = new ArrayList<Muscle>();
         myEnv = canvas.getEnvironment();
-        
        // myForces = new ArrayList<Vector>();
     }
 
@@ -61,11 +60,13 @@ public class Model {
         }
         for (Mass m : myMasses) {
             m.update(myEnv, elapsedTime, bounds);
+            
     		
         }
         for (Muscle m : myMuscles) {
             m.update(elapsedTime, bounds);
         }
+       
     }
 
     /**
@@ -96,7 +97,4 @@ public class Model {
     public void add (Muscle muscle){
     	myMuscles.add(muscle);
     }
-    
-   
-    
 }

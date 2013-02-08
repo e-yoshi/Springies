@@ -1,0 +1,21 @@
+Name:
+Elder Massahiro Yoshida (emy2)
+Xu Rui(rx6)
+
+Date started: 18 Jan 2013
+Date completed: 7 Feb 2013
+
+Number of hours spent: 40
+
+Online resources: Google, java tutorials
+
+Link to project repository:
+https://xurui203@code.google.com/p/springies-xryoshi/ 
+
+Yoshi's contributions: Implemented forces classes and optimized code
+Xu Rui's contributions: Implemented muscle class and optimized code
+Merging was done together on a single computer.
+
+Comments:
+Not sure if some physics anomalies were due to our classes or existing code e.g. getBounce does not 
+seem to prevent mass from going off screen. 

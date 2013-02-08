@@ -1,7 +1,0 @@
-gravity 90.0 00.0
-viscosity 0.1
-centermass -50.0 1.0
-wall 1 70.0 2.0
-wall 2 70.0 2.0
-wall 3 70.0 2.0
-wall 4 70.0 2.0
