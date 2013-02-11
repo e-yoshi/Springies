@@ -21,16 +21,33 @@ public class Environment {
 	private static final String VISCOSITY_KEYWORD = "viscosity";
 	private static final String CM_KEYWORD = "centermass";
 	private static final String WALL_KEYWORD = "wall";
-
+	//default values
+	private static final double DEFAULT_GRAVITY_MAGNITUDE=10.0;
+	private static final double DEFAULT_GRAVITY_ANGLE=Vector.DOWN_DIRECTION;
+	private static final double DEFAULT_VISCOSITY_SCALE = 0.01;
+	private static final double DEFAULT_FIELDORDER = 1.0;
+	private static final double DEFAULT_FIELDMAGNITUDE = 1.0;
+	private static final double DEFAULT_WALLFORCE_EXPONENT = 2.0;
+	private static final double DEFAULT_WALLFORCE_MAGNITUDE = 10.0;
+	private static final Vector DEFAULT_WALLFORCE_1 = new Vector(Vector.DOWN_DIRECTION, DEFAULT_WALLFORCE_MAGNITUDE);
+	private static final Vector DEFAULT_WALLFORCE_2 = new Vector(Vector.LEFT_DIRECTION, DEFAULT_WALLFORCE_MAGNITUDE);
+	private static final Vector DEFAULT_WALLFORCE_3 = new Vector(Vector.UP_DIRECTION, DEFAULT_WALLFORCE_MAGNITUDE);
+	private static final Vector DEFAULT_WALLFORCE_4 = new Vector(Vector.RIGHT_DIRECTION, DEFAULT_WALLFORCE_MAGNITUDE);
+	
+	//Game State
+	private boolean gravityOn = true;
+	private boolean viscosityOn = true;
+	private boolean centerOfMassOn = true;
+	
 	private Canvas myCanvas;
 	//gravity information
-	private double gravityMagnitude;
-	private double gravityAngle;
+	private double gravityMagnitude=DEFAULT_GRAVITY_MAGNITUDE;
+	private double gravityAngle=DEFAULT_GRAVITY_ANGLE;
 	//viscosity information
-	private double viscosityScale;
+	private double viscosityScale = DEFAULT_VISCOSITY_SCALE;
 	//centermass information
-	private double fieldMag;
-	private double fieldOrder;
+	private double fieldMag = DEFAULT_FIELDMAGNITUDE;
+	private double fieldOrder = DEFAULT_FIELDORDER;
 	//wallforces information
 	private HashMap<Vector, Double> wallForcesMap = new HashMap<Vector, Double>();
 
@@ -38,6 +55,10 @@ public class Environment {
 
 	public Environment(Canvas canvas) {
 		myCanvas = canvas;
+		wallForcesMap.put(DEFAULT_WALLFORCE_1, DEFAULT_WALLFORCE_EXPONENT);
+		wallForcesMap.put(DEFAULT_WALLFORCE_2, DEFAULT_WALLFORCE_EXPONENT);
+		wallForcesMap.put(DEFAULT_WALLFORCE_3, DEFAULT_WALLFORCE_EXPONENT);
+		wallForcesMap.put(DEFAULT_WALLFORCE_4, DEFAULT_WALLFORCE_EXPONENT);
 	}
 
 	/**
@@ -89,11 +110,31 @@ public class Environment {
 	 * @param mass
 	 */
 	private void addAllForces(Mass mass) {
+		int key = myCanvas.getLastKeyPressed();
+		
 		myForces.clear();
-		myForces.add(new Gravity(gravityAngle, gravityMagnitude));
-		myForces.add(new Viscosity(viscosityScale, mass));
+		if (key == Canvas.TOGGLE_GRAVITY){
+		    gravityOn = toggle(gravityOn);
+		}
+		if (key == Canvas.TOGGLE_VISCOSITY){
+		    viscosityOn = toggle(viscosityOn);
+		}
+		if (key == Canvas.TOGGLE_CM){
+		    centerOfMassOn = toggle(centerOfMassOn);
+		}
+		if (gravityOn){
+		    myForces.add(new Gravity(gravityAngle, gravityMagnitude));
+		}
+		if (viscosityOn){
+		    myForces.add(new Viscosity(viscosityScale, mass));
+		}
+		if (centerOfMassOn){
+		    myForces.add(new CenterOfMassForce(fieldMag, fieldOrder, myCanvas, mass));
+
+		}
 		myForces.add(new Wallforce(myCanvas, wallForcesMap, mass));
-		myForces.add(new CenterOfMassForce(fieldMag, fieldOrder, myCanvas, mass));
+		myCanvas.resetLastKeyPressed();
+
 	}
 
 	/**
@@ -122,6 +163,13 @@ public class Environment {
 		default:
 			break;
 		}
+	}
+	
+	private boolean toggle(boolean bool){
+	    if(bool == true)
+		return false;
+	    else
+		return true;
 	}
 
 }

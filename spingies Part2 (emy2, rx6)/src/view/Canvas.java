@@ -52,16 +52,26 @@ public class Canvas extends JComponent {
     // input state
     public static final int NO_KEY_PRESSED = -1;
     public static final Point NO_MOUSE_PRESSED = null;
+    //User inputs
+    public static final int LOAD_ASSEMBLY = KeyEvent.VK_N;
+    public static final int CLEAR_ASSEMBLY = KeyEvent.VK_C;
+    public static final int TOGGLE_GRAVITY = KeyEvent.VK_G;
+    public static final int TOGGLE_VISCOSITY = KeyEvent.VK_V;
+    public static final int TOGGLE_CM = KeyEvent.VK_M;
+
+
 
     // drives the animation
     private Timer myTimer;
     // game to be animated
     private Model mySimulation;
     private Environment myEnv;
+    
     // input state
     private int myLastKeyPressed;
     private Point myLastMousePosition;
     private Set<Integer> myKeys;
+
 
 
     /**
@@ -189,9 +199,16 @@ public class Canvas extends JComponent {
             }
         });
     }
+    
+    /**
+     * Reset lastKeyPressed
+     */
+    public void resetLastKeyPressed(){
+	myLastKeyPressed = NO_KEY_PRESSED;
+    }
 
     // load model from file chosen by user
-    private void loadModel () {
+    public void loadModel () {
         Factory factory = new Factory();
         JOptionPane.showMessageDialog( this, "Please select the simulation file");
         int response = INPUT_CHOOSER.showOpenDialog(null);
