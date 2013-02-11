@@ -40,6 +40,7 @@ public class Environment {
 	private boolean centerOfMassOn = true;
 	
 	private Canvas myCanvas;
+	
 	//gravity information
 	private double gravityMagnitude=DEFAULT_GRAVITY_MAGNITUDE;
 	private double gravityAngle=DEFAULT_GRAVITY_ANGLE;
