@@ -40,7 +40,7 @@ public class Mass extends Sprite {
 			applyForce(getBounce(bounds));
 			//Apply external forces from the surroundings
 			applyForce(env.getAllForces(this));
-			// convert force back into Mover's velocity
+     			// convert force back into Mover's velocity
 			getVelocity().sum(myAcceleration);
 			myAcceleration.reset();
 			// move mass by velocity

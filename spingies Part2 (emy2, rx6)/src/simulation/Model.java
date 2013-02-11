@@ -23,78 +23,93 @@ public class Model {
     private List<Muscle> myMuscles;
     //private List<Vector> myForces;
 
+
     /**
      * Create a game of the given size with the given display for its shapes.
      */
     public Model (Canvas canvas) {
-        myView = canvas;
-        myMasses = new ArrayList<Mass>();
-        mySprings = new ArrayList<Spring>();
-        myMuscles = new ArrayList<Muscle>();
-        myEnv = canvas.getEnvironment();
-       // myForces = new ArrayList<Vector>();
+	myView = canvas;
+	myMasses = new ArrayList<Mass>();
+	mySprings = new ArrayList<Spring>();
+	myMuscles = new ArrayList<Muscle>();
+	myEnv = canvas.getEnvironment();
+	// myForces = new ArrayList<Vector>();
     }
 
     /**
      * Draw all elements of the simulation.
      */
     public void paint (Graphics2D pen) {
-        for (Spring s : mySprings) {
-            s.paint(pen);
-        }
-        for (Mass m : myMasses) {
-            m.paint(pen);
-        }
-        for (Muscle m : myMuscles) {
-            m.paint(pen);
-        }
+	for (Spring s : mySprings) {
+	    s.paint(pen);
+	}
+	for (Mass m : myMasses) {
+	    m.paint(pen);
+	}
+	for (Muscle m : myMuscles) {
+	    m.paint(pen);
+	}
     }
 
     /**
      * Update simulation for this moment, given the time since the last moment.
      */
-    public void update (double elapsedTime) {
-        Dimension bounds = myView.getSize();
-        for (Spring s : mySprings) {
-            s.update(elapsedTime, bounds);
-        }
-        for (Mass m : myMasses) {
-            m.update(myEnv, elapsedTime, bounds);
-            
-    		
-        }
-        for (Muscle m : myMuscles) {
-            m.update(elapsedTime, bounds);
-        }
-       
+    public void update (double elapsedTime) {	
+	//Get the user input
+	int key = myView.getLastKeyPressed();
+	
+	if(key == Canvas.LOAD_ASSEMBLY ){
+	    myView.loadModel();
+	    myView.resetLastKeyPressed();
+	    
+	}else if(key == Canvas.CLEAR_ASSEMBLY){
+	    myMasses.clear();
+	    mySprings.clear();
+	    myMuscles.clear();
+	}
+
+	Dimension bounds = myView.getSize();
+	for (Spring s : mySprings) {
+	    s.update(elapsedTime, bounds);
+	}
+	for (Mass m : myMasses) {
+	    m.update(myEnv, elapsedTime, bounds);
+
+
+	}
+	for (Muscle m : myMuscles) {
+	    m.update(elapsedTime, bounds);
+	}
+
+
     }
 
     /**
      * Add given mass to this simulation.
      */
     public void add (Mass mass) {
-        myMasses.add(mass);
+	myMasses.add(mass);
     }
-    
+
     /**
      * Get all the masses from Main
      * @return
      */
     public List<Mass> getMasses(){
-    	return  myMasses;
+	return  myMasses;
     }
 
     /**
      * Add given spring to this simulation.
      */
     public void add (Spring spring) {
-        mySprings.add(spring);
+	mySprings.add(spring);
     }
-    
+
     /**
      * Add given muscle to this simulation.
      */
     public void add (Muscle muscle){
-    	myMuscles.add(muscle);
+	myMuscles.add(muscle);
     }
 }
