@@ -12,7 +12,6 @@ import view.Canvas;
 
 /**
  * XXX.
- * 
  * @author Xu Rui and Yoshi
  */
 public class Model {
@@ -25,15 +24,16 @@ public class Model {
     private List<Muscle> myMuscles;
     private UserSpring userSpring;
     private Mass userTrackerMass;
-    //private List<Vector> myForces;
+    //Default values
     private static final double TRACKER_MASS = 30;
-    private static final double TRACKER_K = 1000;    
+    private static final double TRACKER_K = 1000;  
+    //Simulation state dependent on the user mouse input
     private boolean userSpringLoaded = false;
 
     /**
      * Create a game of the given size with the given display for its shapes.
      */
-    public Model (Canvas canvas) {
+    public Model(Canvas canvas) {
 	myView = canvas;
 	myMasses = new ArrayList<Mass>();
 	mySprings = new ArrayList<Spring>();
@@ -54,7 +54,7 @@ public class Model {
 	for (Muscle m : myMuscles) {
 	    m.paint(pen);
 	}
-	if(userSpringLoaded){
+	if (userSpringLoaded) {
 	    userSpring.paint(pen);
 	}
     }
@@ -62,34 +62,30 @@ public class Model {
     /**
      * Update simulation for this moment, given the time since the last moment.
      */
-    public void update (double elapsedTime) {	
-	//Get the user input
+    public void update (double elapsedTime) {
+	//User keyboard input from Canvas
 	int key = myView.getLastKeyPressed();
+	//User mouse input from Canvas
 	Point myMousePosition = myView.getLastMousePosition();
 	Dimension bounds = myView.getSize();
 
-	if(myMousePosition != null && !userSpringLoaded){ //load new spring
-	    System.out.println(userSpringLoaded);
+	if (myMousePosition != null && !userSpringLoaded) { //load new spring
 	    userTrackerMass = new Mass(myMousePosition.getX(), myMousePosition.getY(), TRACKER_MASS, -1);
 	    createUserSpring(myMasses, myMousePosition, userTrackerMass);
-	    System.out.println("spring created");
 	    userSpringLoaded = true;
 
 	}
 	else if(myMousePosition != null  && userSpringLoaded){ //drag existing spring
-	    System.out.println(userSpringLoaded);
-	    System.out.println(mySprings);
-	    System.out.println(mySprings);
 	    userTrackerMass.setCenter(myMousePosition.getX(), myMousePosition.getY());
 	}
-	else{
+	else {
 	    userSpringLoaded = false;
 	}
 
-	if(key == Canvas.LOAD_ASSEMBLY ){
+	if (key == Canvas.LOAD_ASSEMBLY) {
 	    myView.loadModel();
 
-	}else if(key == Canvas.CLEAR_ASSEMBLY){
+	} else if (key == Canvas.CLEAR_ASSEMBLY) {
 	    myMasses.clear();
 	    mySprings.clear();
 	    myMuscles.clear();
@@ -114,7 +110,7 @@ public class Model {
 	for (Muscle m : myMuscles) {
 	    m.update(elapsedTime, bounds);
 	}
-	
+
 	if (userSpringLoaded){
 	    userSpring.update(elapsedTime, bounds);
 	}
@@ -152,16 +148,24 @@ public class Model {
 	myMuscles.add(muscle);
     }
 
+    /**
+     * Creates a spring that connects the mouse arrow to the nearest mass,
+     * enabling the user to interact with the assembly.
+     * @param masses
+     * @param mousePosition
+     * @param userTrackerMass
+     */
     private void createUserSpring(List<Mass> masses, Point mousePosition, Mass userTrackerMass){
 	double currentDistance = Double.MAX_VALUE;
 	Mass myClosestMass = null;
-	for(Mass m: masses){
+	for (Mass m: masses) {
 	    double distance = Vector.distanceBetween(m.getCenter(), mousePosition);
-	    if(distance < currentDistance){
+	    if (distance < currentDistance) {
 		myClosestMass = m;
 		currentDistance = Vector.distanceBetween(myClosestMass.getCenter(), mousePosition);
 	    }
 	}
 	userSpring = new UserSpring(userTrackerMass, myClosestMass, currentDistance, TRACKER_K);
     }
+
 }
