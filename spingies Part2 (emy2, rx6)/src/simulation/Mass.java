@@ -18,15 +18,18 @@ public class Mass extends Sprite {
 	public static final Pixmap DEFUALT_IMAGE = new Pixmap("mass.gif");
 	private double myMass;
 	private Vector myAcceleration;
+	private int myID;
 	//private Location myCenter;
+	
 
 	/**
 	 * Mass constructor.
 	 */
-	public Mass(double x, double y, double mass) {
+	public Mass(double x, double y, double mass, int id) {
 		super(DEFUALT_IMAGE, new Location(x, y), DEFAULT_SIZE);
 		myMass = mass;
 		myAcceleration = new Vector();
+		myID = id;
 		setCenter(x, y);
 	}
 
@@ -104,6 +107,10 @@ public class Mass extends Sprite {
 	//used in Environment to calculate the center of mass
 	public double getMass(){
 		return myMass;
+	}
+	
+	public int getID(){
+	    return myID;
 	}
 
 	/**

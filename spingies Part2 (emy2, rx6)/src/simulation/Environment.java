@@ -146,7 +146,7 @@ public class Environment {
 		
 		myForces.add(new Wallforce(myCanvas, wallForcesList, mass));
 		for (Vector force: myForces){
-			System.out.println(force);
+			//System.out.println(force);
 		}
 		myCanvas.resetLastKeyPressed();
 	}
@@ -205,9 +205,7 @@ public class Environment {
 	}
 	
 	private boolean toggle(boolean bool){
-	    if(bool == true)
-		return false;
-	    else
-		return true;
+	    bool = !bool;
+	    return bool;
 	}
 }

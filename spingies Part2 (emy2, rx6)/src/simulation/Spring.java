@@ -11,7 +11,7 @@ import util.Vector;
 /**
  * XXX.
  * 
- * @author Robert C. Duvall
+ * @author Xu Rui and Yoshi
  */
 public class Spring extends Sprite {
     // reasonable default values
@@ -120,5 +120,10 @@ public class Spring extends Sprite {
 
     public double getLength() {
 	return myLength;
+    }
+    
+    
+    public void setEndMass(Mass mass){
+	myEnd = mass;
     }
 }
