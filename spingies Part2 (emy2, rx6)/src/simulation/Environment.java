@@ -58,8 +58,6 @@ public class Environment {
 	private SingleWallForce wallForce3 = DEFAULT_WALLFORCE_3;
 	private SingleWallForce wallForce4 = DEFAULT_WALLFORCE_4;
 	
-	
-	//private HashMap<Vector, Double> wallForcesMap = new HashMap<Vector, Double>();
 	private ArrayList<SingleWallForce> wallForcesList = new ArrayList<SingleWallForce>();
 
 	private ArrayList<Vector> myForces = new ArrayList<Vector>();
