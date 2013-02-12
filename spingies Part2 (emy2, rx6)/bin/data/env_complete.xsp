@@ -1,4 +1,4 @@
-gravity 90.0 83.0
+gravity 90.0 8.0
 viscosity 0.01
 centermass 0.0 1.0
 wall 1 100.0 1.0

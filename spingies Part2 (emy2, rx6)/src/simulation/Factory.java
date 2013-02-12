@@ -57,7 +57,7 @@ public class Factory {
 		double x = line.nextDouble();
 		double y = line.nextDouble();
 		double mass = line.nextDouble();
-		Mass result = new Mass(x, y, mass);
+		Mass result = new Mass(x, y, mass, id);
 		myMasses.put(id, result);
 		return result;
 	}
