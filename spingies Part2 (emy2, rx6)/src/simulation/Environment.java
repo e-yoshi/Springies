@@ -3,7 +3,6 @@ package simulation;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 import util.Vector;
@@ -22,43 +21,49 @@ public class Environment {
 	private static final String CM_KEYWORD = "centermass";
 	private static final String WALL_KEYWORD = "wall";
 	//default values
-	private static final double DEFAULT_GRAVITY_MAGNITUDE=10.0;
+	private static final double DEFAULT_GRAVITY_MAGNITUDE= 5.0;
 	private static final double DEFAULT_GRAVITY_ANGLE=Vector.DOWN_DIRECTION;
 	private static final double DEFAULT_VISCOSITY_SCALE = 0.01;
 	private static final double DEFAULT_FIELDORDER = 1.0;
 	private static final double DEFAULT_FIELDMAGNITUDE = 1.0;
 	private static final double DEFAULT_WALLFORCE_EXPONENT = 2.0;
-	private static final double DEFAULT_WALLFORCE_MAGNITUDE = 10.0;
-	private static final Vector DEFAULT_WALLFORCE_1 = new Vector(Vector.DOWN_DIRECTION, DEFAULT_WALLFORCE_MAGNITUDE);
-	private static final Vector DEFAULT_WALLFORCE_2 = new Vector(Vector.LEFT_DIRECTION, DEFAULT_WALLFORCE_MAGNITUDE);
-	private static final Vector DEFAULT_WALLFORCE_3 = new Vector(Vector.UP_DIRECTION, DEFAULT_WALLFORCE_MAGNITUDE);
-	private static final Vector DEFAULT_WALLFORCE_4 = new Vector(Vector.RIGHT_DIRECTION, DEFAULT_WALLFORCE_MAGNITUDE);
+	private static final double DEFAULT_WALLFORCE_MAGNITUDE = 100.0;
+	private static final SingleWallForce DEFAULT_WALLFORCE_1 = new SingleWallForce(Vector.DOWN_DIRECTION, DEFAULT_WALLFORCE_MAGNITUDE, DEFAULT_WALLFORCE_EXPONENT);
+	private static final SingleWallForce DEFAULT_WALLFORCE_2 = new SingleWallForce(Vector.LEFT_DIRECTION, DEFAULT_WALLFORCE_MAGNITUDE, DEFAULT_WALLFORCE_EXPONENT);
+	private static final SingleWallForce DEFAULT_WALLFORCE_3 = new SingleWallForce(Vector.UP_DIRECTION, DEFAULT_WALLFORCE_MAGNITUDE, DEFAULT_WALLFORCE_EXPONENT);
+	private static final SingleWallForce DEFAULT_WALLFORCE_4 = new SingleWallForce(Vector.RIGHT_DIRECTION, DEFAULT_WALLFORCE_MAGNITUDE, DEFAULT_WALLFORCE_EXPONENT);
 	
 	//Game State
 	private boolean gravityOn = true;
 	private boolean viscosityOn = true;
 	private boolean centerOfMassOn = true;
+	private boolean wallOneOn = true;
+	private boolean wallTwoOn = true;
+	private boolean wallThreeOn = true;
+	private boolean wallFourOn = true;
 	
 	private Canvas myCanvas;
+	
 	//gravity information
 	private double gravityMagnitude=DEFAULT_GRAVITY_MAGNITUDE;
 	private double gravityAngle=DEFAULT_GRAVITY_ANGLE;
 	//viscosity information
 	private double viscosityScale = DEFAULT_VISCOSITY_SCALE;
-	//centermass information
+	//center of mass information
 	private double fieldMag = DEFAULT_FIELDMAGNITUDE;
 	private double fieldOrder = DEFAULT_FIELDORDER;
-	//wallforces information
-	private HashMap<Vector, Double> wallForcesMap = new HashMap<Vector, Double>();
+	//wall forces information
+	private SingleWallForce wallForce1 = DEFAULT_WALLFORCE_1;
+	private SingleWallForce wallForce2 = DEFAULT_WALLFORCE_2;
+	private SingleWallForce wallForce3 = DEFAULT_WALLFORCE_3;
+	private SingleWallForce wallForce4 = DEFAULT_WALLFORCE_4;
+	
+	private ArrayList<SingleWallForce> wallForcesList = new ArrayList<SingleWallForce>();
 
 	private ArrayList<Vector> myForces = new ArrayList<Vector>();
 
 	public Environment(Canvas canvas) {
 		myCanvas = canvas;
-		wallForcesMap.put(DEFAULT_WALLFORCE_1, DEFAULT_WALLFORCE_EXPONENT);
-		wallForcesMap.put(DEFAULT_WALLFORCE_2, DEFAULT_WALLFORCE_EXPONENT);
-		wallForcesMap.put(DEFAULT_WALLFORCE_3, DEFAULT_WALLFORCE_EXPONENT);
-		wallForcesMap.put(DEFAULT_WALLFORCE_4, DEFAULT_WALLFORCE_EXPONENT);
 	}
 
 	/**
@@ -113,6 +118,40 @@ public class Environment {
 		int key = myCanvas.getLastKeyPressed();
 		
 		myForces.clear();
+		wallForcesList.clear();
+		checkControls(key);
+		
+		if (gravityOn){
+		    myForces.add(new Gravity(gravityAngle, gravityMagnitude));
+		}
+		if (viscosityOn){
+		    myForces.add(new Viscosity(viscosityScale, mass));
+		}
+		if (centerOfMassOn){
+		    myForces.add(new CenterOfMassForce(fieldMag, fieldOrder, myCanvas, mass));
+		}
+		
+		if (wallOneOn){
+			wallForcesList.add(wallForce1);
+		}
+		if (wallTwoOn){
+			wallForcesList.add(wallForce2);
+		}
+		if (wallThreeOn){
+			wallForcesList.add(wallForce3);
+		}
+		if (wallFourOn){
+			wallForcesList.add(wallForce4);
+		}
+		
+		myForces.add(new Wallforce(myCanvas, wallForcesList, mass));
+		for (Vector force: myForces){
+			System.out.println(force);
+		}
+		myCanvas.resetLastKeyPressed();
+	}
+	
+	private void checkControls(int key){
 		if (key == Canvas.TOGGLE_GRAVITY){
 		    gravityOn = toggle(gravityOn);
 		}
@@ -122,19 +161,19 @@ public class Environment {
 		if (key == Canvas.TOGGLE_CM){
 		    centerOfMassOn = toggle(centerOfMassOn);
 		}
-		if (gravityOn){
-		    myForces.add(new Gravity(gravityAngle, gravityMagnitude));
+		
+		if (key == Canvas.TOGGLE_WALLFORCE1){
+			wallOneOn = toggle(wallOneOn);
 		}
-		if (viscosityOn){
-		    myForces.add(new Viscosity(viscosityScale, mass));
+		if (key == Canvas.TOGGLE_WALLFORCE2){
+			wallTwoOn = toggle(wallTwoOn);
 		}
-		if (centerOfMassOn){
-		    myForces.add(new CenterOfMassForce(fieldMag, fieldOrder, myCanvas, mass));
-
+		if (key == Canvas.TOGGLE_WALLFORCE3){
+			wallThreeOn = toggle(wallThreeOn);
 		}
-		myForces.add(new Wallforce(myCanvas, wallForcesMap, mass));
-		myCanvas.resetLastKeyPressed();
-
+		if (key == Canvas.TOGGLE_WALLFORCE4){
+			wallFourOn = toggle(wallFourOn);
+		}
 	}
 
 	/**
@@ -149,16 +188,16 @@ public class Environment {
 		switch (wallSide) {
 
 		case 1:
-			wallForcesMap.put(new Vector(Vector.DOWN_DIRECTION, magnitude), exponent);
+			wallForce1 = new SingleWallForce(Vector.DOWN_DIRECTION, magnitude, exponent);
 			break;
 		case 2:
-			wallForcesMap.put(new Vector(Vector.LEFT_DIRECTION, magnitude), exponent);
+			wallForce2 = new SingleWallForce(Vector.LEFT_DIRECTION, magnitude, exponent);
 			break;
 		case 3:
-			wallForcesMap.put(new Vector(Vector.UP_DIRECTION, magnitude), exponent);
+			wallForce3 = new SingleWallForce(Vector.UP_DIRECTION, magnitude, exponent);
 			break;
 		case 4:
-			wallForcesMap.put(new Vector(Vector.RIGHT_DIRECTION, magnitude), exponent);
+			wallForce4 = new SingleWallForce(Vector.RIGHT_DIRECTION, magnitude, exponent);
 			break;
 		default:
 			break;
@@ -171,5 +210,4 @@ public class Environment {
 	    else
 		return true;
 	}
-
 }

@@ -58,6 +58,13 @@ public class Canvas extends JComponent {
     public static final int TOGGLE_GRAVITY = KeyEvent.VK_G;
     public static final int TOGGLE_VISCOSITY = KeyEvent.VK_V;
     public static final int TOGGLE_CM = KeyEvent.VK_M;
+    public static final int TOGGLE_WALLFORCE1 = KeyEvent.VK_1;
+    public static final int TOGGLE_WALLFORCE2 = KeyEvent.VK_2;
+    public static final int TOGGLE_WALLFORCE3 = KeyEvent.VK_3;
+    public static final int TOGGLE_WALLFORCE4 = KeyEvent.VK_4;
+    
+    public static final int INCREASE_WALL_SIZE = KeyEvent.VK_UP;
+    public static final int DECREASE_WALL_SIZE = KeyEvent.VK_DOWN;
 
 
 
@@ -71,6 +78,7 @@ public class Canvas extends JComponent {
     private int myLastKeyPressed;
     private Point myLastMousePosition;
     private Set<Integer> myKeys;
+    private Dimension myAdjustableSize;
 
 
 
@@ -81,6 +89,7 @@ public class Canvas extends JComponent {
         // set size (a bit of a pain)
         setPreferredSize(size);
         setSize(size);
+        myAdjustableSize = size;
         // prepare to receive input
         setFocusable(true);
         requestFocus();
@@ -234,5 +243,20 @@ public class Canvas extends JComponent {
     
     public Model getModel(){
     	return mySimulation;
+    }
+    
+    @Override
+    public Dimension getSize(){
+    	return myAdjustableSize;
+    }
+    
+    public void adjustSize(boolean increase){
+    	if (increase){
+    		myAdjustableSize.setSize(myAdjustableSize.width+10, myAdjustableSize.height+10);
+    	}
+    	else{
+    		myAdjustableSize.setSize(myAdjustableSize.width-10, myAdjustableSize.height-10);
+
+    	}
     }
 }
