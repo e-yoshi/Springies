@@ -205,7 +205,7 @@ public class Environment {
 		}
 	}
 	/**
-	 * Toggle the force
+	 * Toggle the force.
 	 * @param bool
 	 * @return
 	 */
