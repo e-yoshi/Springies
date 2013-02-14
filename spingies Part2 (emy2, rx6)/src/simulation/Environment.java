@@ -56,7 +56,11 @@ public class Environment {
 	private SingleWallForce wallForceTop = DEFAULT_WALLFORCE_1;
 	private SingleWallForce wallForceRight = DEFAULT_WALLFORCE_2;
 	private SingleWallForce wallForceBottom = DEFAULT_WALLFORCE_3;
+<<<<<<< HEAD
 	private SingleWallForce wallForce4 = DEFAULT_WALLFORCE_4;
+=======
+	private SingleWallForce wallForceLeft = DEFAULT_WALLFORCE_4;
+>>>>>>> minor changes
 	
 	private ArrayList<SingleWallForce> wallForcesList = new ArrayList<SingleWallForce>();
 
@@ -141,7 +145,7 @@ public class Environment {
 			wallForcesList.add(wallForceBottom);
 		}
 		if (wallFourOn){
-			wallForcesList.add(wallForce4);
+			wallForcesList.add(wallForceLeft);
 		}
 		
 		myForces.add(new Wallforce(myCanvas, wallForcesList, mass));
@@ -177,7 +181,11 @@ public class Environment {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Reads wall forces information for data
+=======
+	 * Reads wall forces information for data 
+>>>>>>> minor changes
 	 * file and puts them into wallForcesMap.
 	 * @param line
 	 */
@@ -198,7 +206,7 @@ public class Environment {
 			wallForceBottom = new SingleWallForce(Vector.UP_DIRECTION, magnitude, exponent);
 			break;
 		case 4:
-			wallForce4 = new SingleWallForce(Vector.RIGHT_DIRECTION, magnitude, exponent);
+			wallForceLeft = new SingleWallForce(Vector.RIGHT_DIRECTION, magnitude, exponent);
 			break;
 		default:
 			break;

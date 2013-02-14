@@ -159,7 +159,7 @@ public class Model {
 	Mass myClosestMass = null;
 	for (Mass m: masses) {
 	    double distance = Vector.distanceBetween(m.getCenter(), mousePosition);
-	    if (distance < currentDistance) {
+	    if (distance < currentDistance){
 		myClosestMass = m;
 		currentDistance = Vector.distanceBetween(myClosestMass.getCenter(), mousePosition);
 	    }
