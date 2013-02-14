@@ -73,7 +73,6 @@ public class Model {
 	    userTrackerMass = new Mass(myMousePosition.getX(), myMousePosition.getY(), TRACKER_MASS, -1);
 	    createUserSpring(myMasses, myMousePosition, userTrackerMass);
 	    userSpringLoaded = true;
-
 	}
 	else if(myMousePosition != null  && userSpringLoaded){ //drag existing spring
 	    userTrackerMass.setCenter(myMousePosition.getX(), myMousePosition.getY());
