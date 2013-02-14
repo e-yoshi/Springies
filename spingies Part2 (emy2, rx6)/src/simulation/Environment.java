@@ -53,10 +53,10 @@ public class Environment {
 	private double fieldMag = DEFAULT_FIELDMAGNITUDE;
 	private double fieldOrder = DEFAULT_FIELDORDER;
 	//wall forces information
-	private SingleWallForce wallForce1 = DEFAULT_WALLFORCE_1;
-	private SingleWallForce wallForce2 = DEFAULT_WALLFORCE_2;
-	private SingleWallForce wallForce3 = DEFAULT_WALLFORCE_3;
-	private SingleWallForce wallForce4 = DEFAULT_WALLFORCE_4;
+	private SingleWallForce wallForceTop = DEFAULT_WALLFORCE_1;
+	private SingleWallForce wallForceRight = DEFAULT_WALLFORCE_2;
+	private SingleWallForce wallForceBottom = DEFAULT_WALLFORCE_3;
+	private SingleWallForce wallForceLeft = DEFAULT_WALLFORCE_4;
 	
 	private ArrayList<SingleWallForce> wallForcesList = new ArrayList<SingleWallForce>();
 
@@ -132,16 +132,16 @@ public class Environment {
 		}
 		
 		if (wallOneOn){
-			wallForcesList.add(wallForce1);
+			wallForcesList.add(wallForceTop);
 		}
 		if (wallTwoOn){
-			wallForcesList.add(wallForce2);
+			wallForcesList.add(wallForceRight);
 		}
 		if (wallThreeOn){
-			wallForcesList.add(wallForce3);
+			wallForcesList.add(wallForceBottom);
 		}
 		if (wallFourOn){
-			wallForcesList.add(wallForce4);
+			wallForcesList.add(wallForceLeft);
 		}
 		
 		myForces.add(new Wallforce(myCanvas, wallForcesList, mass));
@@ -177,7 +177,8 @@ public class Environment {
 	}
 
 	/**
-	 * Reads wall forces information for data file and puts them into wallForcesMap
+	 * Reads wall forces information for data 
+	 * file and puts them into wallForcesMap.
 	 * @param line
 	 */
 	private void wallCommand(Scanner line) {
@@ -188,22 +189,26 @@ public class Environment {
 		switch (wallSide) {
 
 		case 1:
-			wallForce1 = new SingleWallForce(Vector.DOWN_DIRECTION, magnitude, exponent);
+			wallForceTop = new SingleWallForce(Vector.DOWN_DIRECTION, magnitude, exponent);
 			break;
 		case 2:
-			wallForce2 = new SingleWallForce(Vector.LEFT_DIRECTION, magnitude, exponent);
+			wallForceRight = new SingleWallForce(Vector.LEFT_DIRECTION, magnitude, exponent);
 			break;
 		case 3:
-			wallForce3 = new SingleWallForce(Vector.UP_DIRECTION, magnitude, exponent);
+			wallForceBottom = new SingleWallForce(Vector.UP_DIRECTION, magnitude, exponent);
 			break;
 		case 4:
-			wallForce4 = new SingleWallForce(Vector.RIGHT_DIRECTION, magnitude, exponent);
+			wallForceLeft = new SingleWallForce(Vector.RIGHT_DIRECTION, magnitude, exponent);
 			break;
 		default:
 			break;
 		}
 	}
-	
+	/**
+	 * Toggle the force
+	 * @param bool
+	 * @return
+	 */
 	private boolean toggle(boolean bool){
 	    bool = !bool;
 	    return bool;
