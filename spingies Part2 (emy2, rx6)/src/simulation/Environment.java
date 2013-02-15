@@ -15,35 +15,9 @@ import view.Canvas;
  *
  */
 public class Environment {
-	// data file keywords
-	private static final String GRAVITY_KEYWORD = "gravity";
-	private static final String VISCOSITY_KEYWORD = "viscosity";
-	private static final String CM_KEYWORD = "centermass";
-	private static final String WALL_KEYWORD = "wall";
-	//default values
-	private static final double DEFAULT_GRAVITY_MAGNITUDE= 5.0;
-	private static final double DEFAULT_GRAVITY_ANGLE=Vector.DOWN_DIRECTION;
-	private static final double DEFAULT_VISCOSITY_SCALE = 0.01;
-	private static final double DEFAULT_FIELDORDER = 1.0;
-	private static final double DEFAULT_FIELDMAGNITUDE = 1.0;
-	private static final double DEFAULT_WALLFORCE_EXPONENT = 2.0;
-	private static final double DEFAULT_WALLFORCE_MAGNITUDE = 100.0;
-	private static final SingleWallForce DEFAULT_WALLFORCE_1 = new SingleWallForce(Vector.DOWN_DIRECTION, DEFAULT_WALLFORCE_MAGNITUDE, DEFAULT_WALLFORCE_EXPONENT);
-	private static final SingleWallForce DEFAULT_WALLFORCE_2 = new SingleWallForce(Vector.LEFT_DIRECTION, DEFAULT_WALLFORCE_MAGNITUDE, DEFAULT_WALLFORCE_EXPONENT);
-	private static final SingleWallForce DEFAULT_WALLFORCE_3 = new SingleWallForce(Vector.UP_DIRECTION, DEFAULT_WALLFORCE_MAGNITUDE, DEFAULT_WALLFORCE_EXPONENT);
-	private static final SingleWallForce DEFAULT_WALLFORCE_4 = new SingleWallForce(Vector.RIGHT_DIRECTION, DEFAULT_WALLFORCE_MAGNITUDE, DEFAULT_WALLFORCE_EXPONENT);
-	
-	//Game State
-	private boolean gravityOn = true;
-	private boolean viscosityOn = true;
-	private boolean centerOfMassOn = true;
-	private boolean wallOneOn = true;
-	private boolean wallTwoOn = true;
-	private boolean wallThreeOn = true;
-	private boolean wallFourOn = true;
-	
 	private Canvas myCanvas;
 	
+<<<<<<< HEAD
 	//gravity information
 	private double gravityMagnitude=DEFAULT_GRAVITY_MAGNITUDE;
 	private double gravityAngle=DEFAULT_GRAVITY_ANGLE;
@@ -61,11 +35,37 @@ public class Environment {
 =======
 	private SingleWallForce wallForceLeft = DEFAULT_WALLFORCE_4;
 >>>>>>> minor changes
+=======
+	//gravity information, create default values
+	private double gravityAngle = Gravity.DEFAULT_GRAVITY_ANGLE;
+	private double gravityMagnitude = Gravity.DEFAULT_GRAVITY_MAGNITUDE;
+	private Gravity myGravity = new Gravity(gravityAngle, gravityMagnitude, true);
+
+
+	//viscosity information, create default values
+	private Viscosity myViscosity = new Viscosity(Force.DEFAULT_ANGLE, Force.DEFAULT_MAGNITUDE, true);
+	private double viscosityScale = Viscosity.DEFAULT_VISCOSITY_SCALE;
 	
+	//center of mass information, create default values
+	private CenterOfMassForce myCMForce = new CenterOfMassForce(Force.DEFAULT_ANGLE, Force.DEFAULT_MAGNITUDE, true);
+	private double fieldMag = CenterOfMassForce.DEFAULT_FIELDMAGNITUDE;
+	private double fieldOrder = CenterOfMassForce.DEFAULT_FIELDORDER;
+>>>>>>> FInal Springies Version
+	
+	//wall forces information, create default wall forces;
+	private SingleWallForce wallForceTop = new SingleWallForce(Vector.DOWN_DIRECTION, Wallforce.DEFAULT_WALLFORCE_MAGNITUDE, Wallforce.DEFAULT_WALLFORCE_EXPONENT);
+	private SingleWallForce wallForceRight = new SingleWallForce(Vector.LEFT_DIRECTION, Wallforce.DEFAULT_WALLFORCE_MAGNITUDE, Wallforce.DEFAULT_WALLFORCE_EXPONENT);
+	private SingleWallForce wallForceBottom =  new SingleWallForce(Vector.UP_DIRECTION, Wallforce.DEFAULT_WALLFORCE_MAGNITUDE, Wallforce.DEFAULT_WALLFORCE_EXPONENT);
+	private SingleWallForce wallForceLeft = new SingleWallForce(Vector.RIGHT_DIRECTION, Wallforce.DEFAULT_WALLFORCE_MAGNITUDE, Wallforce.DEFAULT_WALLFORCE_EXPONENT);
 	private ArrayList<SingleWallForce> wallForcesList = new ArrayList<SingleWallForce>();
 
 	private ArrayList<Vector> myForces = new ArrayList<Vector>();
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param canvas
+	 */
 	public Environment(Canvas canvas) {
 		myCanvas = canvas;
 	}
@@ -80,16 +80,16 @@ public class Environment {
 				Scanner line = new Scanner(input.nextLine());
 				if (line.hasNext()) {
 					String type = line.next();
-					if (GRAVITY_KEYWORD.equals(type)) {
+					if (Gravity.GRAVITY_KEYWORD.equals(type)) {
 						gravityAngle = line.nextDouble();
 						gravityMagnitude = line.nextDouble();
-					} else if (VISCOSITY_KEYWORD.equals(type)) {
+					} else if (Viscosity.VISCOSITY_KEYWORD.equals(type)) {
 						viscosityScale = line.nextDouble();
 
-					} else if (CM_KEYWORD.equals(type)) {
+					} else if (CenterOfMassForce.CM_KEYWORD.equals(type)) {
 						fieldMag = line.nextDouble();
 						fieldOrder = line.nextDouble();
-					} else if (WALL_KEYWORD.equals(type)) {
+					} else if (Wallforce.WALL_KEYWORD.equals(type)) {
 						wallCommand(line);
 					}
 				}
@@ -115,110 +115,102 @@ public class Environment {
 	}
 
 	/**
-	 * Adds all forces to myForces, use this function to addition of additional forces
+	 * Sets all forces to myForces according to switch information.
+	 * @param mass
+	 */
+	
+	private void setAllForces(Mass mass){
+		myViscosity = new Viscosity(viscosityScale, mass, myViscosity.isTurnedOn());
+		myCMForce = new CenterOfMassForce(fieldMag, fieldOrder, myCanvas, mass, myCMForce.isTurnedOn());
+		myGravity = new Gravity(gravityAngle, gravityMagnitude, myGravity.isTurnedOn());
+		
+		wallForcesList.add(wallForceTop);
+		wallForcesList.add(wallForceRight);
+		wallForcesList.add(wallForceBottom);
+		wallForcesList.add(wallForceLeft);
+	}
+	
+	/**
+	 * Adds all forces to myForces after checking for user controls.
 	 * @param mass
 	 */
 	private void addAllForces(Mass mass) {
 		int key = myCanvas.getLastKeyPressed();
-		
 		myForces.clear();
 		wallForcesList.clear();
 		checkControls(key);
+		setAllForces(mass);
 		
-		if (gravityOn){
-		    myForces.add(new Gravity(gravityAngle, gravityMagnitude));
-		}
-		if (viscosityOn){
-		    myForces.add(new Viscosity(viscosityScale, mass));
-		}
-		if (centerOfMassOn){
-		    myForces.add(new CenterOfMassForce(fieldMag, fieldOrder, myCanvas, mass));
-		}
-		
-		if (wallOneOn){
-			wallForcesList.add(wallForceTop);
-		}
-		if (wallTwoOn){
-			wallForcesList.add(wallForceRight);
-		}
-		if (wallThreeOn){
-			wallForcesList.add(wallForceBottom);
-		}
-		if (wallFourOn){
-			wallForcesList.add(wallForceLeft);
-		}
-		
+		myForces.add(myGravity);
+		myForces.add(myViscosity);
+		myForces.add(myCMForce);
 		myForces.add(new Wallforce(myCanvas, wallForcesList, mass));
-		for (Vector force: myForces){
-			//System.out.println(force);
-		}
 		myCanvas.resetLastKeyPressed();
 	}
 	
+	/**
+	 * check for user input and toggle switches accordingly.
+	 * @param key
+	 */
 	private void checkControls(int key){
 		if (key == Canvas.TOGGLE_GRAVITY){
-		    gravityOn = toggle(gravityOn);
+			myGravity.toggleSwitch();
 		}
 		if (key == Canvas.TOGGLE_VISCOSITY){
-		    viscosityOn = toggle(viscosityOn);
+		    myViscosity.toggleSwitch();
 		}
 		if (key == Canvas.TOGGLE_CM){
-		    centerOfMassOn = toggle(centerOfMassOn);
+			myCMForce.toggleSwitch();
 		}
-		
 		if (key == Canvas.TOGGLE_WALLFORCE1){
-			wallOneOn = toggle(wallOneOn);
+			wallForceTop.toggleSwitch();
 		}
 		if (key == Canvas.TOGGLE_WALLFORCE2){
-			wallTwoOn = toggle(wallTwoOn);
+			wallForceRight.toggleSwitch();
 		}
 		if (key == Canvas.TOGGLE_WALLFORCE3){
-			wallThreeOn = toggle(wallThreeOn);
+			wallForceBottom.toggleSwitch();
 		}
 		if (key == Canvas.TOGGLE_WALLFORCE4){
-			wallFourOn = toggle(wallFourOn);
+			wallForceLeft.toggleSwitch();
+
 		}
 	}
 
 	/**
+<<<<<<< HEAD
 <<<<<<< HEAD
 	 * Reads wall forces information for data
 =======
 	 * Reads wall forces information for data 
 >>>>>>> minor changes
 	 * file and puts them into wallForcesMap.
+=======
+	 * Reads wall forces information for data file and puts them into wallForcesMap
+>>>>>>> FInal Springies Version
 	 * @param line
 	 */
 	private void wallCommand(Scanner line) {
 		int wallSide = line.nextInt();
-		double magnitude = line.nextDouble();
-		double exponent = line.nextDouble();
+		double wallMagnitude = line.nextDouble();
+		double wallExponent = line.nextDouble();
 
 		switch (wallSide) {
 
 		case 1:
-			wallForceTop = new SingleWallForce(Vector.DOWN_DIRECTION, magnitude, exponent);
+			wallForceTop = new SingleWallForce(Vector.DOWN_DIRECTION, wallMagnitude, wallExponent);
 			break;
 		case 2:
-			wallForceRight = new SingleWallForce(Vector.LEFT_DIRECTION, magnitude, exponent);
+			wallForceRight = new SingleWallForce(Vector.LEFT_DIRECTION, wallMagnitude, wallExponent);
 			break;
 		case 3:
-			wallForceBottom = new SingleWallForce(Vector.UP_DIRECTION, magnitude, exponent);
+			wallForceBottom = new SingleWallForce(Vector.UP_DIRECTION, wallMagnitude, wallExponent);
 			break;
 		case 4:
-			wallForceLeft = new SingleWallForce(Vector.RIGHT_DIRECTION, magnitude, exponent);
+			wallForceLeft = new SingleWallForce(Vector.RIGHT_DIRECTION, wallMagnitude, wallExponent);
 			break;
 		default:
 			break;
 		}
-	}
-	/**
-	 * Toggle the force.
-	 * @param bool
-	 * @return
-	 */
-	private boolean toggle(boolean bool){
-	    bool = !bool;
-	    return bool;
 	}
 }
