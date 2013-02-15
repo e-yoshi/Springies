@@ -1,0 +1,22 @@
+Name:
+Elder Massahiro Yoshida (emy2)
+Xu Rui(rx6)
+
+Date started: 18 Jan 2013
+Date completed: 14 Feb 2013
+
+Number of hours spent: 60
+
+Online resources: Google, java tutorials
+
+Link to project repository:
+https://github.com/eldermyoshida/Springies.git
+
+Yoshi's contributions: Implemented forces classes, user input interaction classes, refactored and optimized code
+Xu Rui's contributions: Implemented muscle class, user input interaction classes, refactored and optimized code
+Merging was done together on a single computer.
+
+Comments:
+Not sure if some physics anomalies were due to our classes or existing code e.g. getBounce does not 
+seem to prevent mass from going off screen. 
+The springs and muscles seem to compress and stretch more than they should.
