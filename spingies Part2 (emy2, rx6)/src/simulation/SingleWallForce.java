@@ -13,8 +13,8 @@ public class SingleWallForce extends Force{
  */
 	private double myExponent;
 	
-	public SingleWallForce(double angle, double magnitude) {
-		super(angle, magnitude);
+	public SingleWallForce(double angle, double magnitude, boolean isOn) {
+		super(angle, magnitude, isOn);
 	}
 /**
  * Calculates the forces for each wall(side) of the rectangular bounds.
@@ -26,11 +26,11 @@ public class SingleWallForce extends Force{
 			this.setDirection(direction);
 			this.setMagnitude(magnitude);
 			myExponent = exponent;
-		
 	}
-	
 	
 	public double getExponent(){
 		return myExponent;
 	}
+	
+	
 }

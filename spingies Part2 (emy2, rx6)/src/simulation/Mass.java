@@ -18,9 +18,7 @@ public class Mass extends Sprite {
 	public static final Pixmap DEFUALT_IMAGE = new Pixmap("mass.gif");
 	private double myMass;
 	private Vector myAcceleration;
-	private int myID;
-	//private Location myCenter;
-	
+	private int myID;	
 
 	/**
 	 * Mass constructor.
