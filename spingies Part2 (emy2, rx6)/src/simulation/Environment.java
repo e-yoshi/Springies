@@ -18,6 +18,7 @@ public class Environment {
 	private Canvas myCanvas;
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 	//gravity information
 	private double gravityMagnitude=DEFAULT_GRAVITY_MAGNITUDE;
 	private double gravityAngle=DEFAULT_GRAVITY_ANGLE;
@@ -32,6 +33,8 @@ public class Environment {
 	private SingleWallForce wallForceBottom = DEFAULT_WALLFORCE_3;
 	private SingleWallForce wallForceLeft = DEFAULT_WALLFORCE_4;
 =======
+=======
+>>>>>>> Final Springies version
 	//gravity information, create default values
 	private double gravityAngle = Gravity.DEFAULT_GRAVITY_ANGLE;
 	private double gravityMagnitude = Gravity.DEFAULT_GRAVITY_MAGNITUDE;
@@ -41,6 +44,7 @@ public class Environment {
 	//viscosity information, create default values
 	private Viscosity myViscosity = new Viscosity(Force.DEFAULT_ANGLE, Force.DEFAULT_MAGNITUDE, true);
 	private double viscosityScale = Viscosity.DEFAULT_VISCOSITY_SCALE;
+<<<<<<< HEAD
 	
 	//center of mass information, create default values
 	private CenterOfMassForce myCMForce = new CenterOfMassForce(Force.DEFAULT_ANGLE, Force.DEFAULT_MAGNITUDE, true);
@@ -48,6 +52,14 @@ public class Environment {
 	private double fieldOrder = CenterOfMassForce.DEFAULT_FIELDORDER;
 >>>>>>> Final version of Springies
 	
+=======
+	
+	//center of mass information, create default values
+	private CenterOfMassForce myCMForce = new CenterOfMassForce(Force.DEFAULT_ANGLE, Force.DEFAULT_MAGNITUDE, true);
+	private double fieldMag = CenterOfMassForce.DEFAULT_FIELDMAGNITUDE;
+	private double fieldOrder = CenterOfMassForce.DEFAULT_FIELDORDER;
+	
+>>>>>>> Final Springies version
 	//wall forces information, create default wall forces;
 	private SingleWallForce wallForceTop = new SingleWallForce(Vector.DOWN_DIRECTION, Wallforce.DEFAULT_WALLFORCE_MAGNITUDE, Wallforce.DEFAULT_WALLFORCE_EXPONENT);
 	private SingleWallForce wallForceRight = new SingleWallForce(Vector.LEFT_DIRECTION, Wallforce.DEFAULT_WALLFORCE_MAGNITUDE, Wallforce.DEFAULT_WALLFORCE_EXPONENT);
@@ -138,6 +150,7 @@ public class Environment {
 		setAllForces(mass);
 		
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (gravityOn){
 		    myForces.add(new Gravity(gravityAngle, gravityMagnitude));
 		}
@@ -166,6 +179,11 @@ public class Environment {
 		myForces.add(myViscosity);
 		myForces.add(myCMForce);
 >>>>>>> Final version of Springies
+=======
+		myForces.add(myGravity);
+		myForces.add(myViscosity);
+		myForces.add(myCMForce);
+>>>>>>> Final Springies version
 		myForces.add(new Wallforce(myCanvas, wallForcesList, mass));
 		myCanvas.resetLastKeyPressed();
 	}
@@ -200,8 +218,7 @@ public class Environment {
 	}
 
 	/**
-	 * Reads wall forces information for data 
-	 * file and puts them into wallForcesMap.
+	 * Reads wall forces information for data file and puts them into wallForcesMap
 	 * @param line
 	 */
 	private void wallCommand(Scanner line) {
@@ -213,15 +230,20 @@ public class Environment {
 
 		case 1:
 <<<<<<< HEAD
+<<<<<<< HEAD
 			wallForceTop = new SingleWallForce(Vector.DOWN_DIRECTION, magnitude, exponent);
+=======
+			wallForceTop = new SingleWallForce(Vector.DOWN_DIRECTION, wallMagnitude, wallExponent);
+>>>>>>> Final Springies version
 			break;
 		case 2:
-			wallForceRight = new SingleWallForce(Vector.LEFT_DIRECTION, magnitude, exponent);
+			wallForceRight = new SingleWallForce(Vector.LEFT_DIRECTION, wallMagnitude, wallExponent);
 			break;
 		case 3:
-			wallForceBottom = new SingleWallForce(Vector.UP_DIRECTION, magnitude, exponent);
+			wallForceBottom = new SingleWallForce(Vector.UP_DIRECTION, wallMagnitude, wallExponent);
 			break;
 		case 4:
+<<<<<<< HEAD
 			wallForceLeft = new SingleWallForce(Vector.RIGHT_DIRECTION, magnitude, exponent);
 =======
 			wallForceTop = new SingleWallForce(Vector.DOWN_DIRECTION, wallMagnitude, wallExponent);
@@ -235,11 +257,15 @@ public class Environment {
 		case 4:
 			wallForceLeft = new SingleWallForce(Vector.RIGHT_DIRECTION, wallMagnitude, wallExponent);
 >>>>>>> Final version of Springies
+=======
+			wallForceLeft = new SingleWallForce(Vector.RIGHT_DIRECTION, wallMagnitude, wallExponent);
+>>>>>>> Final Springies version
 			break;
 		default:
 			break;
 		}
 	}
+<<<<<<< HEAD
 <<<<<<< HEAD
 	/**
 	 * Toggle the force.
@@ -252,4 +278,6 @@ public class Environment {
 	}
 =======
 >>>>>>> Final version of Springies
+=======
+>>>>>>> Final Springies version
 }

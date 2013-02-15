@@ -11,13 +11,7 @@ public class UserSpring extends Spring {
     private int springWidth = 10;
     private double pullMagnitude = 20;
 
-    /**
-     * Contructs a spring that can be controlled by the user.
-     * @param start
-     * @param end
-     * @param length
-     * @param kVal
-     */
+
     public UserSpring(Mass start, Mass end, double length, double kVal) {
 	super(start, end, length, kVal);
 	myLength = length;
@@ -26,9 +20,6 @@ public class UserSpring extends Spring {
 	// TODO Auto-generated constructor stub
     }
     
-    /**
-     * Updates this spring.
-     */
     @Override
     public void update(double elapsedTime, Dimension bounds) {
 	setSize(springWidth, (int) myLength);
