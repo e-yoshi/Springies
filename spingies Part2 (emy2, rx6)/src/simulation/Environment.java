@@ -17,25 +17,6 @@ import view.Canvas;
 public class Environment {
 	private Canvas myCanvas;
 	
-<<<<<<< HEAD
-	//gravity information
-	private double gravityMagnitude=DEFAULT_GRAVITY_MAGNITUDE;
-	private double gravityAngle=DEFAULT_GRAVITY_ANGLE;
-	//viscosity information
-	private double viscosityScale = DEFAULT_VISCOSITY_SCALE;
-	//center of mass information
-	private double fieldMag = DEFAULT_FIELDMAGNITUDE;
-	private double fieldOrder = DEFAULT_FIELDORDER;
-	//wall forces information
-	private SingleWallForce wallForceTop = DEFAULT_WALLFORCE_1;
-	private SingleWallForce wallForceRight = DEFAULT_WALLFORCE_2;
-	private SingleWallForce wallForceBottom = DEFAULT_WALLFORCE_3;
-<<<<<<< HEAD
-	private SingleWallForce wallForce4 = DEFAULT_WALLFORCE_4;
-=======
-	private SingleWallForce wallForceLeft = DEFAULT_WALLFORCE_4;
->>>>>>> minor changes
-=======
 	//gravity information, create default values
 	private double gravityAngle = Gravity.DEFAULT_GRAVITY_ANGLE;
 	private double gravityMagnitude = Gravity.DEFAULT_GRAVITY_MAGNITUDE;
@@ -50,7 +31,6 @@ public class Environment {
 	private CenterOfMassForce myCMForce = new CenterOfMassForce(Force.DEFAULT_ANGLE, Force.DEFAULT_MAGNITUDE, true);
 	private double fieldMag = CenterOfMassForce.DEFAULT_FIELDMAGNITUDE;
 	private double fieldOrder = CenterOfMassForce.DEFAULT_FIELDORDER;
->>>>>>> FInal Springies Version
 	
 	//wall forces information, create default wall forces;
 	private SingleWallForce wallForceTop = new SingleWallForce(Vector.DOWN_DIRECTION, Wallforce.DEFAULT_WALLFORCE_MAGNITUDE, Wallforce.DEFAULT_WALLFORCE_EXPONENT);
@@ -178,16 +158,7 @@ public class Environment {
 	}
 
 	/**
-<<<<<<< HEAD
-<<<<<<< HEAD
-	 * Reads wall forces information for data
-=======
-	 * Reads wall forces information for data 
->>>>>>> minor changes
-	 * file and puts them into wallForcesMap.
-=======
 	 * Reads wall forces information for data file and puts them into wallForcesMap
->>>>>>> FInal Springies Version
 	 * @param line
 	 */
 	private void wallCommand(Scanner line) {
