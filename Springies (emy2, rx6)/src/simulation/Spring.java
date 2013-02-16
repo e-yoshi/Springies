@@ -94,23 +94,12 @@ public class Spring extends Sprite {
      * by the muscle class.
      */
     public void moveMassesAlongOscillation() {
-	//Vector vectDist = new Vector(myStart.getCenter(), myEnd.getCenter());
 	double dx = myStart.getX() - myEnd.getX();
 	double dy = myStart.getY() - myEnd.getY();    	
 	double angle = Vector.angleBetween(dx, dy);
 	double lengthChange = (myLength - prevLength) /2;
-/*	if(prevLength > restLength){
-	    lengthChange = (myLength - prevLength) / 2;
-	}
-	else{
-	     lengthChange = 0;
-	}*/
-	
-	//myEnd.moveMass(lengthChange, vectDist.getDirection());
-	//vectDist.negate();
-	//myStart.moveMass(lengthChange, vectDist.getDirection());
-	myStart.moveMass(lengthChange, angle);//0
-	myEnd.moveMass(lengthChange, angle+180);//180
+	myStart.moveMass(lengthChange, angle);
+	myEnd.moveMass(lengthChange, angle+180);
 	prevLength = myLength;
     }
 
